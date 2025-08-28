@@ -1,8 +1,11 @@
 -- populate users
 DELETE
 FROM USERS;
+-- Сбрасывает счётчик автоинкремента для столбца «id» в таблице users.
+-- Это означает, что следующая введённая строка будет иметь значение «id» — 1.
 alter
 sequence USERS_ID_SEQ restart with 1;
+--
 insert into USERS (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, DISPLAY_NAME)
 values ('user@gmail.com', '{noop}password', 'userFirstName', 'userLastName', 'userDisplayName'),
        ('admin@gmail.com', '{noop}admin', 'adminFirstName', 'adminLastName', 'adminDisplayName'),
