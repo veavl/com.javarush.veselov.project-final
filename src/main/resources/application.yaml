@@ -82,16 +82,17 @@ spring:
       mode: always
 
   mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "${MAIL_USERNAME: angelina.snow1994@gmail.com}"   # Real address
+    password: "${MAIL_PASSWORD: zttbozbxxfqmeguf}"              # Real App Password
     properties:
       mail:
         smtp:
           starttls:
             enable: true
-          auth: true
-    host: smtp.gmail.com
-    username: "${MAIL_USERNAME:jira4jr@gmail.com}"
-    password: "${MAIL_PASSWORD:zdfzsrqvgimldzyj}"
-    port: 587
+            auth: true
+
   thymeleaf.check-template-location: false
 
   mvc.throw-exception-if-no-handler-found: true
@@ -106,6 +107,7 @@ logging:
     org.springframework.boot.context.config: DEBUG
 
 server:
+  # port: 8080
   #  https://springdoc.org/index.html#how-can-i-deploy-springdoc-openapi-ui-behind-a-reverse-proxy
   forward-headers-strategy: framework
   servlet:
