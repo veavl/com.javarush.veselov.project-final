@@ -1,0 +1,25 @@
+# Чувствительная информация для Spring Boot приложения
+# Значения считываются из переменных окружения с fallback значениями
+
+spring:
+  datasource:
+    username: ${DB_USERNAME:jira}
+    password: ${DB_PASSWORD:JiraRush}
+  
+  mail:
+    username: ${MAIL_USERNAME:angelina.snow1994@gmail.com}
+    password: ${MAIL_PASSWORD:zttbozbxxfqmeguf}
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENT_ID:YOUR_GIT_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET:YOUR_GIT_CLIENT_SECRET}
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:YOUR_GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET:YOUR_GOOGLE_CLIENT_SECRET}
+          gitlab:
+            client-id: ${GITLAB_CLIENT_ID:b8520a3266089063c0d8261cce36971defa513f5ffd9f9b7a3d16728fc83a494}
+            client-secret: ${GITLAB_CLIENT_SECRET:e72c65320cf9d6495984a37b0f9cc03ec46be0bb6f071feaebbfe75168117004}
