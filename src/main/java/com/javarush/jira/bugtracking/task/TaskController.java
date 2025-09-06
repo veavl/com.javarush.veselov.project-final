@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static com.javarush.jira.common.BaseHandler.createdResponse;
 
@@ -149,6 +150,27 @@ public class TaskController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long id) {
         activityService.delete(id);
+    }
+
+    // Task Tags API
+    @GetMapping("/{id}/tags")
+    public Set<String> getTaskTags(@PathVariable long id) {
+        log.info("get tags for task {}", id);
+        return taskService.getTaskTags(id);
+    }
+
+    @PostMapping("/{id}/tags")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addTagToTask(@PathVariable long id, @RequestParam String tag) {
+        log.info("add tag '{}' to task {}", tag, id);
+        taskService.addTagToTask(id, tag);
+    }
+
+    @DeleteMapping("/{id}/tags/{tag}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeTagFromTask(@PathVariable long id, @PathVariable String tag) {
+        log.info("remove tag '{}' from task {}", tag, id);
+        taskService.removeTagFromTask(id, tag);
     }
 
     private record TaskTreeNode(TaskTo taskTo, List<TaskTreeNode> subNodes) implements ITreeNode<TaskTo, TaskTreeNode> {
