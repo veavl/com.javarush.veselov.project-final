@@ -328,3 +328,28 @@ values ('todo', 'ToDo', 3, 'in_progress,canceled|'),
 
 drop index UK_USER_BELONG;
 create unique index UK_USER_BELONG on USER_BELONG (OBJECT_ID, OBJECT_TYPE, USER_ID, USER_TYPE_CODE) where ENDPOINT is null;
+
+--changeset author:add_task_timing_data_v5::author
+-- Создаем пользователя если его нет
+INSERT INTO USERS (ID, EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, DISPLAY_NAME)
+VALUES (1, 'test@example.com', '$2a$10$dummy', 'Test', 'User', 'Test User')
+ON CONFLICT (ID) DO NOTHING;
+
+-- Создаем проект если его нет
+INSERT INTO PROJECT (ID, TITLE, CODE, DESCRIPTION, TYPE_CODE, PARENT_ID, STARTPOINT, ENDPOINT)
+VALUES (1, 'Test Project', 'TEST', 'Test project for timing', 'project', null, null, null)
+ON CONFLICT (ID) DO NOTHING;
+
+-- Создаем задачу если её нет
+INSERT INTO TASK (ID, TITLE, PROJECT_ID, STATUS_CODE, TYPE_CODE)
+VALUES (1, 'Test Task for Timing', 1, 'in_progress', 'task')
+ON CONFLICT (ID) DO NOTHING;
+
+-- Добавляем активности
+INSERT INTO ACTIVITY (ID, AUTHOR_ID, TASK_ID, UPDATED, STATUS_CODE)
+VALUES (7, 1, 1, '2023-05-15 09:00:00', 'in_progress'),
+       (8, 1, 1, '2023-05-15 15:30:00', 'ready_for_review'),
+       (9, 1, 1, '2023-05-16 11:45:00', 'done')
+ON CONFLICT (ID) DO NOTHING;
+
+

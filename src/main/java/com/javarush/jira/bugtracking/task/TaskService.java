@@ -19,8 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.javarush.jira.bugtracking.ObjectType.TASK;
@@ -161,5 +163,29 @@ public class TaskService {
         Assert.hasText(tag, "tag must not be null or empty");
         Task task = handler.getRepository().getExisted(taskId);
         task.getTags().remove(tag);
+    }
+
+    public Duration getTimeInWork(Task task) {
+        Optional<Activity> startWork = activityHandler.getRepository()
+                .findFirstByTaskIdAndStatusCodeOrderByUpdatedAsc(task.getId(), "in_progress");
+        Optional<Activity> endWork = activityHandler.getRepository()
+                .findFirstByTaskIdAndStatusCodeOrderByUpdatedAsc(task.getId(), "ready_for_review");
+        
+        if (startWork.isPresent() && endWork.isPresent()) {
+            return Duration.between(startWork.get().getUpdated(), endWork.get().getUpdated());
+        }
+        return Duration.ZERO;
+    }
+
+    public Duration getTimeInTesting(Task task) {
+        Optional<Activity> startTesting = activityHandler.getRepository()
+                .findFirstByTaskIdAndStatusCodeOrderByUpdatedAsc(task.getId(), "ready_for_review");
+        Optional<Activity> endTesting = activityHandler.getRepository()
+                .findFirstByTaskIdAndStatusCodeOrderByUpdatedAsc(task.getId(), "done");
+        
+        if (startTesting.isPresent() && endTesting.isPresent()) {
+            return Duration.between(startTesting.get().getUpdated(), endTesting.get().getUpdated());
+        }
+        return Duration.ZERO;
     }
 }
